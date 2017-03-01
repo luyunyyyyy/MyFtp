@@ -50,10 +50,10 @@ public class FtpServer {
 
     public static void main(String[] args){
         PropertyConfigurator.configure("log4j.properties");
-
+        Data.init();
 
         try {
-            FtpServer ftpServer = new FtpServer(8888);
+            FtpServer ftpServer = new FtpServer(9999);
             ftpServer.service();
         } catch (IOException e) {
             e.printStackTrace();

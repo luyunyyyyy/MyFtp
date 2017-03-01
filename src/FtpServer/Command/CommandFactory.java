@@ -7,7 +7,7 @@ public class CommandFactory {
     public static Command getCommand(String command){
         command.toUpperCase();
         switch (command){
-            case "USER": return new UesrCommand();
+            case "USER": return new UserCommand();
             case "PASS": return new PassCommand();
             default: return  null;
         }

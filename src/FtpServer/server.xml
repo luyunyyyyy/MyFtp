@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <!--This is my comments-->
+    <rootDir>C:\ftpData</rootDir>
+    <users>
+        <user>
+            <username>root</username>
+            <password>admin</password>
+        </user>
+
+    </users>
+</root>

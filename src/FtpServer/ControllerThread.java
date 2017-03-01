@@ -3,7 +3,7 @@ package FtpServer;
 import FtpServer.Command.Command;
 import FtpServer.Command.CommandFactory;
 import FtpServer.Command.PassCommand;
-import FtpServer.Command.UesrCommand;
+import FtpServer.Command.UserCommand;
 
 import java.io.*;
 import java.net.Socket;
@@ -18,7 +18,7 @@ public class ControllerThread extends Thread{
     Socket clientSocket;
     int connectCount = 0;
     boolean isLogin = false;
-
+    public static final ThreadLocal<String> USER = new ThreadLocal<String>();
 
 
 
@@ -77,7 +77,7 @@ public class ControllerThread extends Thread{
 
     }
     private boolean alreadyLogin(Command command){
-        if(command instanceof UesrCommand || command instanceof PassCommand)
+        if(command instanceof UserCommand || command instanceof PassCommand)
             return true;
         else
             return isLogin;
