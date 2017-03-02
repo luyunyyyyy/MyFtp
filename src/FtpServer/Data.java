@@ -22,6 +22,7 @@ public class Data {
     public static void init() {
 
 
+
         File file = new File("src/FtpServer/server.xml");
         SAXBuilder builder = new SAXBuilder();
         try {
