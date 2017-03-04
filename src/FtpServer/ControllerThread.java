@@ -4,6 +4,7 @@ import FtpServer.Command.Command;
 import FtpServer.Command.CommandFactory;
 import FtpServer.Command.PassCommand;
 import FtpServer.Command.UserCommand;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.Socket;
@@ -19,11 +20,15 @@ public class ControllerThread extends Thread{
     int connectCount = 0;
     boolean isLogin = false;
     public static final ThreadLocal<String> USER = new ThreadLocal<String>();
-
+    private static Logger logger = Logger.getLogger(ControllerThread.class);
 
 
     ControllerThread(Socket clientSocket){
         this.clientSocket = clientSocket;
+    }
+
+    public void setLogin(boolean login) {
+        isLogin = login;
     }
 
     @Override
@@ -43,30 +48,36 @@ public class ControllerThread extends Thread{
                     bufferedWriter.flush();
                     connectCount++;
                 }else{
-                    String command = bufferedReader.readLine();
-                    if(command !=null){
-                        String[] commandArgs = command.split(" ");
+                    //需要验证socket是否关闭 两种情况 密码错误或者quit命令
+                    if(!clientSocket.isClosed()) {
+                        String command = bufferedReader.readLine();
+                        logger.info("用户输入:"+ command);
+                        if (command != null) {
+                            String[] commandArgs = command.split(" ");
+                            logger.info(commandArgs);
+                            Command commandObj = CommandFactory.getCommand(commandArgs[0]);
+                            if (alreadyLogin(commandObj)) {
 
-                        Command commandObj = CommandFactory.getCommand(commandArgs[0]);
-                        if(alreadyLogin(commandObj)){
-
-                            if(commandObj == null){
-                                bufferedWriter.write(COMMAND_NOT_IMPLEMENTED_502);
-                            }else{
-                                String data = "";
-                            /*
-                            因为会用到的命令都是只有两部分
-                             */
-                                if(commandArgs.length >=2)
-                                    data = commandArgs[1];
-                                commandObj.excuteCommand(data,bufferedWriter,this);
+                                if (commandObj == null) {
+                                    bufferedWriter.write(COMMAND_NOT_IMPLEMENTED_502);
+                                } else {
+                                    /*
+                                    因为会用到的命令都是只有两部分
+                                    */
+                                    String data = "";
+                                    if (commandArgs.length >= 2)
+                                        data = commandArgs[1];
+                                    commandObj.excuteCommand(data, bufferedWriter, this);
+                                }
+                            } else {
+                                bufferedWriter.write(NEEDED_LOGIN_503);
+                                bufferedWriter.flush();
                             }
-                        }else{
-                            bufferedWriter.write(NEEDED_LOGIN_503);
-                            bufferedWriter.flush();
-                        }
 
-                    }
+                        }
+                    }else
+                        break;
+                        //因为socket已经关闭，所以线程可以结束
                 }
             }
 

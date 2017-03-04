@@ -9,7 +9,6 @@ import org.apache.log4j.PropertyConfigurator;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import static FtpServer.ConstantArg.*;
 
 /**
  * Created by LYY on 2017/3/1.
@@ -53,7 +52,7 @@ public class FtpServer {
         Data.init();
 
         try {
-            FtpServer ftpServer = new FtpServer(9999);
+            FtpServer ftpServer = new FtpServer(21);
             ftpServer.service();
         } catch (IOException e) {
             e.printStackTrace();

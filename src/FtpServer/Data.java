@@ -1,5 +1,6 @@
 package FtpServer;
 
+import org.apache.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -16,9 +17,9 @@ import java.util.List;
 public class Data {
     public  static  String  rootDir = "C:" + File.separator;
     public static HashMap<String,String> users = new HashMap<String,String>();
-
     public static HashMap<String,String> adminUsers = new HashMap<String,String>();
 
+    private static Logger logger = Logger.getLogger(Data.class);
     public static void init() {
 
 
@@ -31,28 +32,34 @@ public class Data {
 
             //配置服务器的默认目录
             rootDir = root.getChildText("rootDir");
-            System.out.print("rootDir is:");
-            System.out.println(rootDir);
+            logger.info("rootDir is:" + rootDir);
 
             //允许登录的用户
             Element usersE = root.getChild("users");
             List<Element> usersEC = usersE.getChildren();
             String username = null;
             String password = null;
-            System.out.println("\n所有用户的信息：");
+            logger.info("可登陆用户共:"+ usersEC.size());
             for (Element user : usersEC) {
                 username = user.getChildText("username");
                 password = user.getChildText("password");
-                System.out.println("用户名：" + username);
-                System.out.println("密码：" + password);
+                logger.info("用户名：" + username);
+                logger.info("密码：" + password);
                 users.put(username, password);
             }
 
 
+            String rootName = root.getChildText("root_user");
+            String rootPass = root.getChildText("root_pass");
+            adminUsers.put(rootName,rootPass);
+            logger.info("root用户名:" + rootName);
+            logger.info("root密码:" + rootPass);
+
+
         } catch (JDOMException e) {
-            e.printStackTrace();
+            logger.trace("xml解析错误",e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.trace("ioException",e);
         }
     }
     }
