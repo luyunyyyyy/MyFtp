@@ -21,7 +21,26 @@ public class ControllerThread extends Thread{
     boolean isLogin = false;
     public static final ThreadLocal<String> USER = new ThreadLocal<String>();
     private static Logger logger = Logger.getLogger(ControllerThread.class);
+    private String dataPort ;
 
+    public String getDataPort() {
+        return dataPort;
+    }
+
+    public String getDataIp() {
+        return dataIp;
+    }
+
+    private String dataIp;
+    public void setNowDir(String nowDir) {
+        this.nowDir = nowDir;
+    }
+
+    public String getNowDir() {
+        return nowDir;
+    }
+
+    String nowDir  = Data.rootDir;
 
     ControllerThread(Socket clientSocket){
         this.clientSocket = clientSocket;
@@ -29,6 +48,10 @@ public class ControllerThread extends Thread{
 
     public void setLogin(boolean login) {
         isLogin = login;
+    }
+
+    public Socket getClientSocket() {
+        return clientSocket;
     }
 
     @Override
@@ -61,6 +84,7 @@ public class ControllerThread extends Thread{
                                 if (commandObj == null) {
                                     bufferedWriter.write(COMMAND_NOT_IMPLEMENTED_502);
                                 } else {
+
                                     /*
                                     因为会用到的命令都是只有两部分
                                     */

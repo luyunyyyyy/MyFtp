@@ -10,4 +10,8 @@ public class FtpResponse {
     public static final String SERVER_CANNOT_ACCEPT_ARGUMENT_501= "501 命令参数错误\r\n";
     public static final String USER_LOGGED_IN_230 = "230 用户登陆成功\r\n";
     public static final String NOT_LOGGED_IN_530 = "530 登陆失败\r\n";
+    public static final String SERVICE_CLOSING_CONTROL_CONNECTION_221 = "221 结束连接\r\n";
+    public static final String DIR_ILLEGAL_555 = "555 文件路径不合法\r\n";
+    public static final String FILE_STATUS_OKAY_150  = "150 open ascii mode...\r\n";
+    public static final String SERVICE_READY_FOR_NEW_USER_220 ="220 transfer complete...\r\n";
 }
