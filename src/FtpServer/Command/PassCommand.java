@@ -19,15 +19,18 @@ public class PassCommand implements Command{
     @Override
     public void excuteCommand(String data, BufferedWriter bufferedWriter, ControllerThread controllerThread) throws IOException {
         logger.info("调用PASS");
-        bufferedWriter.write("excute the PASS command");
+//        bufferedWriter.write("excute the PASS command\r\n");
+//        bufferedWriter.flush();
         String response = "";
         String key = controllerThread.USER.get();
+        logger.info("key:"+key);
         String pass = Data.adminUsers.get(key) == null ? Data.users.get(key) : Data.adminUsers.get(key);
-
+        logger.info("pass:"+pass);
         if(data.equals(pass)){
             logger.info("密码正确登陆成功");
             controllerThread.setLogin(true);
             response = USER_LOGGED_IN_230;
+            logger.info("response"+response);
         }else{
             logger.info("登陆失败密码错误:" + data);
             response = NOT_LOGGED_IN_530;

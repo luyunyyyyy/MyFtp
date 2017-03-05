@@ -13,4 +13,5 @@ public class RestCommand implements Command {
     public void excuteCommand(String data, BufferedWriter bufferedWriter, ControllerThread controllerThread) throws IOException {
 
     }
+
 }

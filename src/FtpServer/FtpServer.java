@@ -41,7 +41,7 @@ public class FtpServer {
             clientSocket = serverSocket.accept();
             logger.info("客户端接入 启动线程");
             new ControllerThread(clientSocket).start();
-
+            //clientSocket.isClosed()
         }
 
 

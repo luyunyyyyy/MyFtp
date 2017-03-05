@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Encoding">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/src/FtpClient/FtpClient.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/FtpServer" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/FtpServer/Command" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/FtpServer/Command/UserCommand.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/FtpServer/ControllerThread.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/FtpServer/Data.java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

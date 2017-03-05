@@ -30,17 +30,17 @@ public class ListCommand implements Command {
         response.append("文件目录如下:" + "\n");
 
         ListCommand.traverseFolder(nowDir, response);
-        Socket dataSocket;
+        Socket dataSocket = controllerThread.getDataSocket();
         try {
-            bufferedWriter.write(FILE_STATUS_OKAY_150);
-            bufferedWriter.flush();
-            dataSocket = new Socket(controllerThread.getDataIp(), Integer.parseInt(controllerThread.getDataPort()));
+//            bufferedWriter.write(FILE_STATUS_OKAY_150);
+//            bufferedWriter.flush();
             BufferedWriter dataWriter = new BufferedWriter(new OutputStreamWriter(dataSocket.getOutputStream()));
             dataWriter.write(response.toString());
             dataWriter.flush();
-            dataSocket.close();
-            bufferedWriter.write(SERVICE_READY_FOR_NEW_USER_220);
-            bufferedWriter.flush();
+            dataWriter.close();
+            logger.info("data:::"+response.toString());
+//            bufferedWriter.write(SERVICE_READY_FOR_NEW_USER_220);
+//            bufferedWriter.flush();
         } catch (NumberFormatException e) {
 
             logger.trace(e);

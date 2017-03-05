@@ -24,7 +24,7 @@ public class UserCommand implements Command{
         String response = "";
         if(Data.adminUsers.containsKey(data)||Data.users.containsKey(data)){
             logger.info("用户名正确:" + data);
-
+            controllerThread.USER.set(data);
             response = PASSWORD_REQURIED_FOR_331;
         }
 

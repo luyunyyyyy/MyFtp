@@ -12,27 +12,38 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import static FtpServer.FtpResponse.COMMAND_NOT_IMPLEMENTED_502;
-import static FtpServer.FtpResponse.NEEDED_LOGIN_503;
+import static FtpServer.FtpResponse.NEEDED_LOGIN_532;
 
 /**
  * Created by LYY on 2017/3/1.
  */
 public class ControllerThread extends Thread {
-    public ServerSocket getDataServerSocket() {
-        return dataServerSocket;
+
+    public BufferedWriter getDataWriter() {
+        return dataWriter;
     }
 
-    public void setDataServerSocket(ServerSocket dataServerSocket) {
-        this.dataServerSocket = dataServerSocket;
+    public void setDataWriter(BufferedWriter dataWriter) {
+        this.dataWriter = dataWriter;
     }
 
-    Socket clientSocket;
-    int connectCount = 0;
-    boolean isLogin = false;
-    public static final ThreadLocal<String> USER = new ThreadLocal<String>();
+    private BufferedWriter dataWriter;
+    private Socket clientSocket;
+    private int connectCount = 0;
+    private boolean isLogin = false;
+    public static final ThreadLocal<String> USER = new ThreadLocal();
     private static Logger logger = Logger.getLogger(ControllerThread.class);
     private String dataPort;
-    private ServerSocket dataServerSocket;
+
+    public Socket getDataSocket() {
+        return dataSocket;
+    }
+
+    public void setDataSocket(Socket dataSocket) {
+        this.dataSocket = dataSocket;
+    }
+
+    private Socket dataSocket;
 
     public String getDataPort() {
         return dataPort;
@@ -52,7 +63,7 @@ public class ControllerThread extends Thread {
         return nowDir;
     }
 
-    String nowDir = Data.rootDir;
+    private String nowDir = Data.rootDir;
 
     ControllerThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -78,19 +89,26 @@ public class ControllerThread extends Thread {
             //如果是刚刚连接，用户没有输入数据，这里可能会有问题
             while (true) {
                 if (connectCount == 0) {
+                    logger.info("第一次接入");
                     bufferedWriter.write("220");
                     bufferedWriter.write("\r\n");
                     bufferedWriter.flush();
+
                     connectCount++;
                 } else {
+                    logger.info("第二次接入");
                     //需要验证socket是否关闭 两种情况 密码错误或者quit命令
                     if (!clientSocket.isClosed()) {
+                        logger.info("等待用户输入");
                         String command = bufferedReader.readLine();
+
                         logger.info("用户输入:" + command);
-                        if (command != null) {
+                        if (command != null && command != " " && command != "") {
                             String[] commandArgs = command.split(" ");
-                            logger.info(commandArgs);
+
                             Command commandObj = CommandFactory.getCommand(commandArgs[0]);
+                            logger.info(commandArgs[0]);
+                            logger.info("commandobj" + commandObj);
                             if (alreadyLogin(commandObj)) {
 
                                 if (commandObj == null) {
@@ -106,13 +124,16 @@ public class ControllerThread extends Thread {
                                     commandObj.excuteCommand(data, bufferedWriter, this);
                                 }
                             } else {
-                                bufferedWriter.write(NEEDED_LOGIN_503);
+                                bufferedWriter.write(NEEDED_LOGIN_532);
                                 bufferedWriter.flush();
                             }
 
                         }
-                    } else
+                    } else {
+                        logger.info("socket关闭");
                         break;
+                    }
+
                     //因为socket已经关闭，所以线程可以结束
                 }
             }
@@ -125,9 +146,11 @@ public class ControllerThread extends Thread {
     }
 
     private boolean alreadyLogin(Command command) {
-        if (command instanceof UserCommand || command instanceof PassCommand)
-            return true;
-        else
-            return isLogin;
+//        if (command instanceof UserCommand || command instanceof PassCommand)
+//            return true;
+//        else
+//            return isLogin;
+
+        return (command instanceof UserCommand || command instanceof PassCommand) || isLogin;
     }
 }

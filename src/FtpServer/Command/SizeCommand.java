@@ -23,7 +23,7 @@ public class SizeCommand implements Command {
         File aimFile = new File(fileDir);
         if (aimFile.exists() && aimFile.isFile()) {
             bufferedWriter.write(SERVICE_READY_FOR_NEW_USER_220);
-            bufferedWriter.write("文件:" + aimFile.getName() + "大小为" + aimFile.length());
+            bufferedWriter.write("文件:" + aimFile.getName() + "大小为:" + aimFile.length()+"\r\n");
             logger.info("文件:" + aimFile.getName() + "大小为" + aimFile.length());
 
         } else {
