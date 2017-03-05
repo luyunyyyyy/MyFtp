@@ -24,7 +24,7 @@ public class ListCommand implements Command {
 
     @Override
     public void excuteCommand(String data, BufferedWriter bufferedWriter, ControllerThread controllerThread) throws IOException {
-        String nowDir = controllerThread.getNowDir() + data;
+        String nowDir = controllerThread.getNowDir() + File.separator+ data;
         logger.info("调用LIST 目录:" + nowDir);
         StringBuilder response = new StringBuilder();
         response.append("文件目录如下:" + "\n");
@@ -55,37 +55,35 @@ public class ListCommand implements Command {
 
     private static void traverseFolder(String path, StringBuilder response) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
         File file = new File(path);
 
-
         if (file.exists()) {
+
             File[] files = file.listFiles();
             if (files.length == 0) {
                 logger.info("文件夹是空的!" + "\n");
                 response.append("文件夹为空\n");
 
-            } else {
+            }
+            else {
                 for (File file2 : files) {
                     if (file2.isDirectory()) {
                         logger.info("文件夹:" + file2.getName() + "\n");
                         response.append("文件夹:" + file2.getName() + "\n");
                         traverseFolder(file2.getAbsolutePath(), response);
-                    } else {
+                    }
+                    else {
                         String lastModifiedTime = sdf.format(new Date(Long.parseLong(String.valueOf(file2.lastModified()))));   // 时间戳转换成时间
-
                         response.append("文件:" + file2.getName() + "\t" + file2.length() + "\t" + lastModifiedTime + "\n");
                         logger.info("文件:" + file2.getName() + "\t" + file2.length() + "\t" + lastModifiedTime + "\n");
                     }
                 }
             }
-        } else {
+        }
+        else {
             logger.info("文件不存在!");
             response.append("文件不存在!");
-
         }
-
-
     }
 
     public static void main(String[] args) {

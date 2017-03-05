@@ -12,6 +12,9 @@ public class FtpResponse {
     public static final String NOT_LOGGED_IN_530 = "530 登陆失败\r\n";
     public static final String SERVICE_CLOSING_CONTROL_CONNECTION_221 = "221 结束连接\r\n";
     public static final String DIR_ILLEGAL_555 = "555 文件路径不合法\r\n";
-    public static final String FILE_STATUS_OKAY_150  = "150 open ascii mode...\r\n";
-    public static final String SERVICE_READY_FOR_NEW_USER_220 ="220 transfer complete...\r\n";
+    public static final String FILE_STATUS_OKAY_150  = "150 开启ansii模式\r\n";
+    public static final String SERVICE_READY_FOR_NEW_USER_220 ="220 传送完成\r\n";
+    public static final String CWD_COMMAND_SUCCESFUL_250 = "250 更改当前工作目录\r\n";
+    public static final String FILE_NOT_FOUND_550 = "550 文件没有被找到\r\n";
+    public static final String
 }

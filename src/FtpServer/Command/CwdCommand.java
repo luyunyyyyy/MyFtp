@@ -28,6 +28,7 @@ public class CwdCommand implements Command {
         } else {
             bufferedWriter.write(FILE_NOT_FOUND_550);
         }
+        logger.info("当前工作目录" + controllerThread.getNowDir());
         bufferedWriter.flush();
     }
 
